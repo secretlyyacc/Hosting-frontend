@@ -12,6 +12,7 @@ import Authenticating from "@/components/login/authenticating";
 import Success from "@/components/login/success";
 import Link from "next/link"
 import { MY_API } from "@/lib/config";
+
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -20,38 +21,61 @@ export default function LoginPage() {
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const login = async () => {
-    const res = await fetch(`${MY_API}/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, remember }),
-      credentials: "include"
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setLoading(true);
-      setSuccess(false);
-      setTimeout(() => {
-        setLoading(false);
+
+  const login = async (e) => {
+    e.preventDefault(); // Penting! biar form gak reload
+    
+    // Validasi input
+    if (!username || !password) {
+      setMessage("Username and password are required");
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      console.log("Attempting login with:", { username, remember });
+      
+      const res = await fetch(`${MY_API}/login`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json" 
+        },
+        body: JSON.stringify({ 
+          username: username.trim(), 
+          password: password, 
+          remember 
+        }),
+        credentials: "include"
+      });
+
+      const data = await res.json();
+      console.log("Login response:", data);
+
+      if (res.ok) {
         setSuccess(true);
         setTimeout(() => {
           window.location.href = "/dashboard";
-        }, 2000)
-      }, 2000);
-    } else {
-      setSuccess(false);
+        }, 2000);
+      } else {
+        setMessage(data.error || "Login failed. Please check your credentials.");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setMessage("Network error. Please try again.");
       setLoading(false);
-      setMessage(data.error);
     }
   };
 
   return (
     <>
-    {loading ?
+    {loading && !success ? (
       <Authenticating />
-      : success ? 
+    ) : success ? ( 
       <Success />
-      :
+    ) : (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-md sm:max-w-lg">
           <Card className="border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:shadow-lg">
@@ -67,89 +91,104 @@ export default function LoginPage() {
                 </Alert>
               )}
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input 
-                    id="username" 
-                    type="username" 
-                    placeholder="Enter your username" 
-                    className="pl-10" 
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    className="pl-10 pr-10"
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-muted-foreground" />
-                    )}
-                  </Button>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Checkbox id="remember" 
-                    checked={remember}
-                    onCheckedChange={val => setRemember(val === true)}
-                    className="border border-gray-400 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500"
+            <form onSubmit={login}>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="username">Username</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input 
+                      id="username" 
+                      type="text" 
+                      placeholder="Enter your username" 
+                      className="pl-10" 
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      disabled={loading}
+                      required
                     />
-                  <Label htmlFor="remember" className="text-sm text-muted-foreground">
-                    Remember me
-                  </Label>
+                  </div>
                 </div>
-              </div>
 
-              <Button className="w-full" size="lg" onClick={login} disabled={loading}>
-                {loading ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Signing In...
-                  </>
-                ) : (
-                  <>
-                    Sign In
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </>
-                )}
-              </Button>
-
-
-              <div className="text-center space-y-2">
-                <div className="text-sm text-muted-foreground">
-                  Don't have an account?{" "}
-                  <Link href="/register" className="text-primary hover:underline font-medium">
-                    Sign up
-                  </Link>
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password</Label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      className="pl-10 pr-10"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      disabled={loading}
+                      required
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      onClick={() => setShowPassword(!showPassword)}
+                      disabled={loading}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4 text-muted-foreground" />
+                      ) : (
+                        <Eye className="h-4 w-4 text-muted-foreground" />
+                      )}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="remember" 
+                      checked={remember}
+                      onCheckedChange={(val) => setRemember(val === true)}
+                      className="border border-gray-400 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500"
+                      disabled={loading}
+                    />
+                    <Label htmlFor="remember" className="text-sm text-muted-foreground">
+                      Remember me
+                    </Label>
+                  </div>
+                </div>
+
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  size="lg" 
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Signing In...
+                    </>
+                  ) : (
+                    <>
+                      Sign In
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+
+                <div className="text-center space-y-2">
+                  <div className="text-sm text-muted-foreground">
+                    Don't have an account?{" "}
+                    <Link href="/register" className="text-primary hover:underline font-medium">
+                      Sign up
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </form>
           </Card>
         </div>
       </div>
-    }
+    )}
     </>
   )
 }
