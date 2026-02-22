@@ -37,7 +37,7 @@ export function Navigation() {
             className="flex items-center gap-3 text-xl md:text-2xl font-bold text-primary hover:text-primary/80 transition-all duration-300 hover:scale-105"
           >
             <Terminal className="w-6 h-6 md:w-7 md:h-7 text-primary transition-transform duration-300 hover:rotate-12" />
-            Xovan Store
+            VinzStore
           </Link>
 
           {/* Desktop Navigation */}

@@ -1356,7 +1356,7 @@ function DatabaseSettings({
             "CLIENT_VERSION": "5.11",
             "DEPOSIT_WORLD": "{belum work}",
             "DISCORD_URL": "https://www.discord.com/",
-            "NAME": "Xovan Test",
+            "NAME": "VinzTest",
             "OSM_LINK": "hostosm.apip.site",
             "OSM_PATH": "cache/",
             "PORT": 17092,

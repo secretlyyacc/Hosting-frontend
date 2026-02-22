@@ -150,7 +150,7 @@ export default function HomePage() {
             <motion.div variants={fadeInUp}>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent animate-gradient-x leading-tight">
                 Welcome to<br />
-                <span className="text-foreground">Xovan Store</span>
+                <span className="text-foreground">VinzStore</span>
               </h1>
             </motion.div>
             <motion.div variants={fadeInUp}>
@@ -321,7 +321,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} {...({ className:"text-3xl font-bold mb-4" } as any )}>
-              Why Choose Xovan Store?
+              Why Choose VinzStore?
             </motion.h2>
             <motion.p initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} {...({ className:"text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"} as any )}>
               We provide industry-leading gaming services with unmatched reliability and professional support.
@@ -355,7 +355,7 @@ export default function HomePage() {
             Ready to Get Started?
           </motion.h2>
           <motion.p initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} {...({ className:"text-xl text-muted-foreground mb-8 max-w-2xl mx-auto" } as any )}>
-            Join thousands of satisfied customers and experience the difference with Xovan Store's premium gaming services.
+            Join thousands of satisfied customers and experience the difference with VinzStore's premium gaming services.
           </motion.p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/services/growtopia">

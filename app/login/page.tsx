@@ -59,7 +59,7 @@ export default function LoginPage() {
               <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                 Welcome Back
               </CardTitle>
-              <CardDescription>Sign in to your Xovan Store account</CardDescription>
+              <CardDescription>Sign in to your VinzStore account</CardDescription>
               {message && (
                 <Alert variant="destructive" className="mt-4">
                   <AlertCircle className="h-4 w-4" />

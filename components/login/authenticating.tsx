@@ -45,7 +45,7 @@ export default function AuthLoadingPage() {
           {/* Loading text */}
           <div className="space-y-4">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Xovan Store
+              VinzStore
             </h1>
 
             <div className="flex items-center justify-center space-x-2 text-gray-300">

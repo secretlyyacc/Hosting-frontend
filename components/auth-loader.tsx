@@ -51,7 +51,7 @@ export default function AuthLoader({ onComplete, duration = 3000 }: AuthLoaderPr
 
         {/* Brand */}
         <h2 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
-          Xovan Store
+          VinzStore
         </h2>
 
         {/* Progress bar */}

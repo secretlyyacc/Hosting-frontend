@@ -100,7 +100,7 @@ export default function RegisterPage() {
                   <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     Create Account
                   </CardTitle>
-                  <CardDescription>Join Xovan Store and access premium gaming services</CardDescription>
+                  <CardDescription>Join VinzStore and access premium gaming services</CardDescription>
                   {message && (
                     <Alert variant="destructive" className="mt-4">
                       <AlertCircle className="h-4 w-4" />
